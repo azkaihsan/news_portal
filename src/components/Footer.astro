@@ -1,0 +1,23 @@
+---
+import "../styles/global.css";
+import { Image } from 'astro:assets';
+import localSampleImage from '../assets/sample.jpeg';
+---
+<footer class="bg-white p-4">
+  <div class="flex flex-col md:flex-row justify-between items-start">
+    <div class="bg-gray-100 p-4 rounded w-full md:w-1/3">
+      <h3 class="font-bold">Subscribe Our Newsletter</h3>
+      <form class="mt-2 flex">
+        <input type="email" placeholder="Enter your e-mail here" class="border border-gray-300 px-2 py-1 rounded-l flex-grow" />
+        <button class="bg-red-500 text-white px-2 py-1 rounded-r">→</button>
+      </form>
+    </div>
+    <div class="mt-4 md:mt-0">
+      <img src={localSampleImage.src} alt="Person with mask" class="w-32 h-auto" />
+      <p class="text-sm mt-2">Pandemic math: Retiring without Social Security</p>
+    </div>
+  </div>
+  <div class="mt-4 text-center">
+    <a href="#" class="bg-black text-white px-4 py-2 inline-block">MORE TOP STORIES</a>
+  </div>
+</footer>

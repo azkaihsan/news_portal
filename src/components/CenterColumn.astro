@@ -1,0 +1,22 @@
+---
+import "../styles/global.css";
+import { Image } from 'astro:assets';
+import localSampleImage from '../assets/sample.jpeg';
+---
+<section>
+  <div class="bg-white shadow p-4">
+    <span class="bg-red-500 text-white px-2 py-1 text-xs">MAIN STORY</span>
+    <h2 class="text-xl font-bold mt-2 uppercase">House Democrats introduce resolution to censure Rep. Gosar over animated video that depicted him killing Rep. Ocasio-Cortez</h2>
+    <p class="text-sm">Brief description of the main story goes here...</p>
+    <div class="text-xs text-gray-500">
+      <span>23 minutes ago</span>
+      <span> • By Michael Jondy and Sarah Aspari</span>
+    </div>
+    <img src={localSampleImage.src} alt="Rep. Gosar" class="mt-2 w-full h-auto" />
+    <div class="flex justify-center space-x-2 mt-2">
+      <button class="px-2 py-1 bg-gray-200 rounded"><</button>
+      <button class="px-2 py-1 bg-gray-200 rounded">></button>
+      <button class="px-2 py-1 bg-gray-200 rounded">Play</button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,13 @@
+---
+import "../styles/global.css";
+import LeftColumn from './LeftColumn.astro';
+import CenterColumn from './CenterColumn.astro';
+import RightColumn from './RightColumn.astro';
+---
+<main class="bg-white p-4">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <LeftColumn />
+    <CenterColumn />
+    <RightColumn />
+  </div>
+</main>
