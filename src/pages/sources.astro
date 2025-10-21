@@ -1,6 +1,5 @@
 ---
-import SimpleNewsPortal from '../components/SimpleNewsPortal.jsx';
-import '../styles/global.css';
+import NewsPortalWrapper from '../components/NewsPortalWrapper.jsx';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -8,9 +7,9 @@ import '../styles/global.css';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/pelita-logo.png" />
-  <title>Pelita News Portal</title>
+  <title>Sources - News Portal</title>
 </head>
 <body>
-  <SimpleNewsPortal client:only="react" />
+  <NewsPortalWrapper client:only="react" />
 </body>
 </html>

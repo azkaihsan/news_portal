@@ -1,0 +1,22 @@
+---
+import NewsPortalWrapper from '../../components/NewsPortalWrapper.jsx';
+import { mockCountries } from '../../mock/mockData.js';
+
+export async function getStaticPaths() {
+  return mockCountries.map(country => ({
+    params: { countryCode: country.code.toLowerCase() }
+  }));
+}
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/pelita-logo.png" />
+  <title>Country News - News Portal</title>
+</head>
+<body>
+  <NewsPortalWrapper client:only="react" />
+</body>
+</html>

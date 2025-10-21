@@ -1,0 +1,22 @@
+---
+import NewsPortalWrapper from '../../components/NewsPortalWrapper.jsx';
+import { mockNews } from '../../mock/mockData.js';
+
+export async function getStaticPaths() {
+  return mockNews.map(news => ({
+    params: { id: news.id.toString() }
+  }));
+}
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/pelita-logo.png" />
+  <title>News Detail - News Portal</title>
+</head>
+<body>
+  <NewsPortalWrapper client:only="react" />
+</body>
+</html>

@@ -1,0 +1,25 @@
+---
+// This is the main news portal page using React
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/pelita-logo.png" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Pelita News Portal</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Import and render the React app
+      import { createRoot } from 'react-dom/client';
+      import App from '../App.js';
+      
+      const container = document.getElementById('root');
+      const root = createRoot(container);
+      root.render(App);
+    </script>
+  </body>
+</html>

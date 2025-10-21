@@ -1,10 +1,29 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import tailwindcss from "@tailwindcss/vite";
+import react from '@astrojs/react';
+import tailwind from '@astrojs/tailwind';
+import path from 'path';
 
 // https://astro.build/config
 export default defineConfig({
+    integrations: [react(), tailwind()],
     vite: {
-        plugins: [tailwindcss()],
+        resolve: {
+            alias: {
+                '@': path.resolve('./src'),
+            },
+        },
+        esbuild: {
+            loader: 'jsx',
+            include: /src\/.*\.[jt]sx?$/,
+            exclude: [],
+        },
+        optimizeDeps: {
+            esbuildOptions: {
+                loader: {
+                    '.js': 'jsx',
+                },
+            },
+        },
     },
 });
