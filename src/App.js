@@ -2,15 +2,15 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import HomePage from "./pages/HomePage";
-import NewsDetailPage from "./pages/NewsDetailPage";
-import CategoryNewsPage from "./pages/CategoryNewsPage";
-import CountryNewsPage from "./pages/CountryNewsPage";
-import SourceNewsPage from "./pages/SourceNewsPage";
-import CategoriesPage from "./pages/CategoriesPage";
-import CountriesPage from "./pages/CountriesPage";
-import SourcesPage from "./pages/SourcesPage";
-import SearchPage from "./pages/SearchPage";
+import HomePage from "./react-pages/HomePage";
+import NewsDetailPage from "./react-pages/NewsDetailPage";
+import CategoryNewsPage from "./react-pages/CategoryNewsPage";
+import CountryNewsPage from "./react-pages/CountryNewsPage";
+import SourceNewsPage from "./react-pages/SourceNewsPage";
+import CategoriesPage from "./react-pages/CategoriesPage";
+import CountriesPage from "./react-pages/CountriesPage";
+import SourcesPage from "./react-pages/SourcesPage";
+import SearchPage from "./react-pages/SearchPage";
 
 function App() {
   return (
