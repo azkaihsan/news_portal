@@ -35,9 +35,9 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Quick Links */}
+          {/* Menu */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-bold mb-4">Menu</h3>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm">Home</Link></li>
               <li><Link to="/categories" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm">Categories</Link></li>
@@ -48,20 +48,58 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Categories */}
+          {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Categories</h3>
+            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              {categories.map((category) => (
-                <li key={category.id}>
+                <li key='3'>
                   <Link
-                    to={`/category/${toCamelCase(category.name)}`}
+                    to='/category/general'
                     className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
                   >
-                    {category.name}
+                    General
                   </Link>
                 </li>
-              ))}
+                <li key='9'>
+                  <Link
+                    to='/category/Politics'
+                    className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
+                  >
+                    Politics
+                  </Link>
+                </li>
+                <li key='15'>
+                  <Link
+                    to='/category/Opinion'
+                    className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
+                  >
+                    Opinion
+                  </Link>
+                </li>
+                <li key='19'>
+                  <Link
+                    to='/country/19'
+                    className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
+                  >
+                    National News
+                  </Link>
+                </li>
+                <li key='16'>
+                  <Link
+                    to='/category/World'
+                    className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
+                  >
+                    World News
+                  </Link>
+                </li>
+                <li key='67'>
+                  <Link
+                    to='/category/BRICS'
+                    className="text-gray-400 hover:text-emerald-400 transition-colors text-sm"
+                  >
+                    BRICS
+                  </Link>
+                </li>
             </ul>
           </div>
 

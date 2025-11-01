@@ -4,43 +4,6 @@ import TrendingSection from './TrendingSection';
 import { ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 
-// Mock data
-const mockNews = [
-  {
-    id: 1,
-    title: "Breaking: Major Development in Technology Sector",
-    description: "A significant breakthrough has been announced in the technology sector that could change the way we interact with digital devices.",
-    urltoimage: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800",
-    published_at: new Date().toISOString(),
-    author: "John Doe",
-    source: { id: 1, name: "Tech News" },
-    category: { id: 1, name: "technology" },
-    country: { id: 1, name: "United States", code: "US" }
-  },
-  {
-    id: 2,
-    title: "Global Climate Summit Reaches Historic Agreement",
-    description: "World leaders have reached a historic agreement on climate change measures that will impact global policies for decades to come.",
-    urltoimage: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800",
-    published_at: new Date().toISOString(),
-    author: "Jane Smith",
-    source: { id: 2, name: "Global News" },
-    category: { id: 2, name: "environment" },
-    country: { id: 2, name: "Global", code: "GL" }
-  },
-  {
-    id: 3,
-    title: "Economic Markets Show Strong Recovery Signs",
-    description: "Financial markets around the world are showing strong signs of recovery following recent economic challenges.",
-    urltoimage: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=800",
-    published_at: new Date().toISOString(),
-    author: "Mike Johnson",
-    source: { id: 3, name: "Finance Daily" },
-    category: { id: 3, name: "business" },
-    country: { id: 1, name: "United States", code: "US" }
-  }
-];
-
 const mockCategories = [
   { id: 1, name: "technology", description: "Latest tech news" },
   { id: 2, name: "environment", description: "Climate and environment" },
@@ -121,7 +84,7 @@ const HomePageNoRouter = () => {
             </a>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {mockCategories.slice(0, 8).map((category) => (
+            {mockCategories.slice(8, 16).map((category) => (
               <a key={category.id} href={`/category/${category.name}`}>
                 <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-xl">
                   <h3 className="text-white font-bold text-lg uppercase tracking-wide">

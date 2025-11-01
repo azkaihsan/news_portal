@@ -123,7 +123,7 @@ const HomePage = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {categories.slice(0, 8).map((category) => (
+            {categories.slice(8, 16).map((category) => (
               <Link key={category.id} to={`/category/${category.name}`}>
                 <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 shadow-md hover:shadow-xl">
                   <h3 className="text-white font-bold text-lg uppercase tracking-wide">

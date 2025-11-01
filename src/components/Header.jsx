@@ -87,15 +87,62 @@ const Header = () => {
       <nav>
         <div className="max-w-7xl mx-auto px-4">
           <div className="hidden md:flex items-center justify-center gap-8 py-3">
-            {categories.map((category) => (
               <Link
-                key={category.id}
-                to={`/category/${category.name.toLowerCase()}`}
+                key='3'
+                to='/category/general'
                 className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
               >
-                {category.name}
+                General
               </Link>
-            ))}
+              <Link
+                key='9'
+                to='/category/Politics'
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                Politics
+              </Link>
+              <Link
+                key='19'
+                to='/country/19'
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                National News
+              </Link>
+              <Link
+                key='16'
+                to='/category/World'
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                World News
+              </Link>
+              <Link
+                key='20'
+                to='/country/20'
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                Iran
+              </Link>
+              <Link
+                key='54'
+                to='/country/54'
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                USA
+              </Link>
+              <Link
+                key='41'
+                to='/country/41'
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                Russia
+              </Link>
+              <Link
+                key='67'
+                to='/category/BRICS'
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                BRICS
+              </Link>
           </div>
 
           {/* Mobile Menu */}
@@ -114,16 +161,71 @@ const Header = () => {
                 </div>
               </form>
               <div className="flex flex-col gap-2">
-                {categories.map((category) => (
                   <Link
-                    key={category.id}
-                    to={`/category/${category.name.toLowerCase()}`}
+                    key='3'
+                    to='/category/general'
                     onClick={() => setMobileMenuOpen(false)}
                     className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
                   >
-                    {category.name.toUpperCase()}
+                    General
                   </Link>
-                ))}
+                  <Link
+                    key='9'
+                    to='/category/Politics'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    Politics
+                  </Link>
+                  <Link
+                    key='19'
+                    to='/country/19'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    National News
+                  </Link>
+                  <Link
+                    key='16'
+                    to='/category/World'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    World News
+                  </Link>
+                  <Link
+                    key='20'
+                    to='/country/20'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    Iran
+                  </Link>
+                  <Link
+                    key='54'
+                    to='/country/54'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    USA
+                  </Link>
+
+                  <Link
+                    key='41'
+                    to='/country/41'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    Russia
+                  </Link>
+                  <Link
+                    key='67'
+                    to='/category/BRICS'
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    BRICS
+                  </Link>
               </div>
             </div>
           )}

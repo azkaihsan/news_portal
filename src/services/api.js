@@ -4,7 +4,7 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || 'https://news-api.me
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 15000,
+  timeout: 150000,
   headers: {
     'Content-Type': 'application/json',
   },
