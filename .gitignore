@@ -164,3 +164,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 >>>>>>> d0de37a (Initial commit from Astro)
+
+# Local Netlify folder
+.netlify

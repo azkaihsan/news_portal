@@ -1,24 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Clock, User, Share2, Facebook, Twitter, Linkedin, ArrowLeft, Loader2 } from 'lucide-react';
+import { Clock, User, Share2, Copy, Mail, ArrowLeft, Loader2 } from 'lucide-react';
 import { fetchNewsById, fetchNewsByCategory } from '../services/api';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import NewsCard from '../components/NewsCard';
 
 const NewsDetailPage = () => {
-  const { id } = useParams();
   const [news, setNews] = useState(null);
   const [relatedNews, setRelatedNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleEmail = () => {
+    const subject = encodeURIComponent(news.title);
+    const body = encodeURIComponent(`Check out this article: ${window.location.href}`);
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+  };
 
   useEffect(() => {
     const getNewsDetails = async () => {
       try {
         setLoading(true);
-        const newsData = await fetchNewsById(id);
-        setNews(newsData);
+        const slug = window.location.pathname.split('/').pop();
+        const id = slug ? slug.split('-').pop() : null;
+        let newsData = null;
+        if (id) {
+          newsData = await fetchNewsById(id);
+          setNews(newsData);
+        } else {
+          setError('Invalid news URL.');
+        }
         if (newsData && newsData.category) {
           const related = await fetchNewsByCategory(newsData.category.name, 5);
           setRelatedNews(related.filter(item => item.id !== newsData.id).slice(0, 3));
@@ -31,10 +50,8 @@ const NewsDetailPage = () => {
       }
     };
 
-    if (id) {
-      getNewsDetails();
-    }
-  }, [id]);
+    getNewsDetails();
+  }, []);
 
   if (loading) {
     return (
@@ -159,14 +176,11 @@ const NewsDetailPage = () => {
                   <span className="font-semibold text-gray-900">Share this article:</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Button size="sm" variant="outline" className="hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors">
-                    <Facebook className="w-4 h-4 mr-2" /> Facebook
+                  <Button size="sm" variant="outline" onClick={handleCopy} className="hover:bg-gray-200 transition-colors">
+                    <Copy className="w-4 h-4 mr-2" /> {copied ? 'Copied!' : 'Copy URL'}
                   </Button>
-                  <Button size="sm" variant="outline" className="hover:bg-sky-500 hover:text-white hover:border-sky-500 transition-colors">
-                    <Twitter className="w-4 h-4 mr-2" /> Twitter
-                  </Button>
-                  <Button size="sm" variant="outline" className="hover:bg-blue-700 hover:text-white hover:border-blue-700 transition-colors">
-                    <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
+                  <Button size="sm" variant="outline" onClick={handleEmail} className="hover:bg-gray-200 transition-colors">
+                    <Mail className="w-4 h-4 mr-2" /> Email
                   </Button>
                 </div>
               </div>

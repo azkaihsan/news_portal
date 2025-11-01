@@ -1,6 +1,7 @@
 import React from 'react';
 import { Clock, User } from 'lucide-react';
 import { Card } from './ui/card';
+import { slugify } from '../lib/utils';
 
 const NewsCard = ({ news, featured = false }) => {
   const formatDate = (dateString) => {
@@ -21,7 +22,7 @@ const NewsCard = ({ news, featured = false }) => {
 
   if (featured) {
     return (
-      <a href={`/news/${news.id}`}>
+      <a href={`/news/${slugify(news.title)}-${news.id}`}>
         <Card className="overflow-hidden group cursor-pointer border-0 shadow-lg hover:shadow-2xl transition-all duration-500">
           <div className="relative h-96 overflow-hidden">
             <img 
@@ -58,7 +59,7 @@ const NewsCard = ({ news, featured = false }) => {
   }
 
   return (
-    <a href={`/news/${news.id}`}>
+    <a href={`/news/${slugify(news.title)}-${news.id}`}>
       <Card className="overflow-hidden group cursor-pointer hover:shadow-lg transition-all duration-300 border border-gray-200">
         <div className="relative h-48 overflow-hidden bg-gray-100">
           <img 

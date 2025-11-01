@@ -2,7 +2,7 @@
 import NewsPortalWrapper from '../../components/NewsPortalWrapper.jsx';
 import { fetchNewsById } from '../../services/api.js';
 
-const { id: slug } = Astro.params;
+const { slug } = Astro.params;
 const id = slug ? slug.split('-').pop() : null;
 let news = null;
 let error = null;
