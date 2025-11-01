@@ -1,15 +1,8 @@
 ---
 import NewsPortalWrapper from '../../components/NewsPortalWrapper.jsx';
-import { mockCategories } from '../../mock/mockData.js';
-
-export async function getStaticPaths() {
-  return mockCategories.map(category => ({
-    params: { categoryName: category.name },
-    props: { category }
-  }));
-}
-
-const { category } = Astro.props;
+import '../../styles/global.css';
+export const prerender = false;
+const { categoryName } = Astro.params;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +10,9 @@ const { category } = Astro.props;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/pelita-logo.png" />
-  <title>Category News - News Portal</title>
+  <title>{categoryName ? `${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} News` : 'Category News'} - News Portal</title>
 </head>
 <body>
-  <NewsPortalWrapper client:only="react" page="category" category={category} />
+  <NewsPortalWrapper client:only="react" />
 </body>
 </html>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { mockCountries } from '../mock/mockData';
+import { fetchCountries } from '../services/api';
 import { ChevronRight, MapPin, Globe, Loader2 } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -11,8 +11,18 @@ const CountriesPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setCountries(mockCountries);
-    setLoading(false);
+    const getCountries = async () => {
+      try {
+        const data = await fetchCountries();
+        setCountries(data);
+      } catch (err) {
+        setError('Failed to fetch countries. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getCountries();
   }, []);
 
   if (loading) {
@@ -56,7 +66,7 @@ const CountriesPage = () => {
         {/* Countries Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {countries.map((country) => (
-            <Link key={country.id} to={`/country/${country.code.toLowerCase()}`}>
+            <Link key={country.id} to={`/country/${country.id}`}>
               <Card className="group p-6 hover:shadow-xl transition-all duration-300 border-2 border-gray-200 hover:border-emerald-600 cursor-pointer h-full">
                 <div className="flex flex-col h-full">
                   <div className="mb-4">

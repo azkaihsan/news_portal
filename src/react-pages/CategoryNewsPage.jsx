@@ -1,17 +1,78 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import NewsCard from '../components/NewsCard';
-import { ChevronRight, Filter } from 'lucide-react';
+import { ChevronRight, Filter, Loader2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { mockNews, mockCategories } from '../mock/mockData';
+import { fetchNewsByCategory, fetchCategories } from '../services/api';
 
 const CategoryNewsPage = () => {
   const { categoryName } = useParams();
-  const category = mockCategories.find(c => c.name.toLowerCase() === categoryName.toLowerCase());
-  const filteredNews = mockNews.filter(news => news.category.name.toLowerCase() === categoryName.toLowerCase());
+  const [news, setNews] = useState([]);
+  const [category, setCategory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    const loadCategoryNews = async () => {
+      try {
+        setError(null);
+        setLoading(true);
+        
+        const categories = await fetchCategories();
+        const currentCategory = categories.find(c => c.name.toLowerCase() === categoryName.toLowerCase());
+        
+        if (currentCategory) {
+          setCategory(currentCategory);
+          const newsData = await fetchNewsByCategory(currentCategory.id);
+          setNews(newsData);
+        } else {
+          setError('Category not found.');
+        }
+      } catch (err) {
+        setError('Failed to fetch news. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCategoryNews();
+  }, [categoryName]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} className="bg-emerald-600 hover:bg-emerald-700">
+            Retry
+          </Button>
+        </div>
+      </div>
+    );
+  }
+  
   if (!category) {
-    return <div>Category not found</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 mb-4">Category not found.</p>
+          <Link to="/categories">
+            <Button className="bg-emerald-600 hover:bg-emerald-700">
+              Back to Categories
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -35,7 +96,7 @@ const CategoryNewsPage = () => {
         {/* News Count and Filter */}
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
           <p className="text-gray-600">
-            <span className="font-semibold text-gray-900">{filteredNews.length}</span> articles found
+            <span className="font-semibold text-gray-900">{news.length}</span> articles found
           </p>
           <Button variant="outline" className="flex items-center gap-2">
             <Filter className="w-4 h-4" />
@@ -44,10 +105,10 @@ const CategoryNewsPage = () => {
         </div>
 
         {/* News Grid */}
-        {filteredNews.length > 0 ? (
+        {news.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {filteredNews.map((news) => (
-              <NewsCard key={news.id} news={news} />
+            {news.map((item) => (
+              <NewsCard key={item.id} news={item} />
             ))}
           </div>
         ) : (

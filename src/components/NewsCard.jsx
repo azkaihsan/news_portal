@@ -43,7 +43,7 @@ const NewsCard = ({ news, featured = false }) => {
               <div className="flex items-center gap-4 text-sm">
                 <span className="flex items-center gap-1">
                   <User className="w-4 h-4" />
-                  {news.author || 'Unknown'}
+                  {news.author || news.newssource.name || 'Unknown'}
                 </span>
                 <span className="flex items-center gap-1">
                   <Clock className="w-4 h-4" />
@@ -75,7 +75,7 @@ const NewsCard = ({ news, featured = false }) => {
           <div className="flex items-center justify-between text-xs text-gray-500">
             <span className="flex items-center gap-1">
               <User className="w-3 h-3" />
-              {news.author || news.source?.name || 'Unknown'}
+              {news.author || news.source?.name || news.newssource.name || 'Unknown'}
             </span>
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />

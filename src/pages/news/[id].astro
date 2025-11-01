@@ -1,11 +1,16 @@
 ---
 import NewsPortalWrapper from '../../components/NewsPortalWrapper.jsx';
-import { mockNews } from '../../mock/mockData.js';
+import { fetchNewsById } from '../../services/api.js';
 
-export async function getStaticPaths() {
-  return mockNews.map(news => ({
-    params: { id: news.id.toString() }
-  }));
+const { id } = Astro.params;
+let news = null;
+let error = null;
+
+try {
+  news = await fetchNewsById(id);
+} catch (err) {
+  error = 'Failed to fetch news details.';
+  console.error(err);
 }
 ---
 <!DOCTYPE html>
@@ -14,9 +19,18 @@ export async function getStaticPaths() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/pelita-logo.png" />
-  <title>News Detail - News Portal</title>
+  <title>{news ? `${news.title} - News Portal` : 'News Detail - News Portal'}</title>
 </head>
 <body>
-  <NewsPortalWrapper client:only="react" />
+  {error ? (
+    <div class="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div class="text-center">
+        <p class="text-red-600 mb-4">{error}</p>
+        <a href="/" class="bg-emerald-600 text-white px-4 py-2 rounded hover:bg-emerald-700">Back to Home</a>
+      </div>
+    </div>
+  ) : (
+    <NewsPortalWrapper client:only="react" />
+  )}
 </body>
 </html>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { mockCategories } from '../mock/mockData';
+import { fetchCategories } from '../services/api';
 import { ChevronRight, TrendingUp, Loader2 } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -11,8 +11,21 @@ const CategoriesPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setCategories(mockCategories);
-    setLoading(false);
+    const loadCategories = async () => {
+      try {
+        setError(null);
+        setLoading(true);
+        const data = await fetchCategories();
+        setCategories(data);
+      } catch (err) {
+        setError('Failed to fetch categories. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCategories();
   }, []);
 
   if (loading) {

@@ -76,7 +76,7 @@ export const mockNews = [
 export const mockCategories = [
   { id: 1, name: "business", description: "Business and financial news" },
   { id: 2, name: "technology", description: "Latest in tech and innovation" },
-  { id: 3, name: "environment", description: "Environmental and climate news" },
+  { id: 3, name: "general", description: "General news" },
   { id: 4, name: "sports", description: "Sports news and updates" },
   { id: 5, name: "health", description: "Health and wellness news" },
   { id: 6, name: "science", description: "Scientific discoveries" },

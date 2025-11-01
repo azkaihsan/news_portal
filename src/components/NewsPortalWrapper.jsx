@@ -12,6 +12,10 @@ import CountriesPage from "../react-pages/CountriesPage";
 import SourcesPage from "../react-pages/SourcesPage";
 import SearchPage from "../react-pages/SearchPage";
 import PlaceholderPage from "../react-pages/PlaceholderPage";
+import AboutPage from "../react-pages/AboutPage";
+import PrivacyPolicyPage from "../react-pages/PrivacyPolicyPage";
+import TermsOfServicePage from "../react-pages/TermsOfServicePage";
+import CookiesPolicyPage from "../react-pages/CookiesPolicyPage";
 
 function NewsPortalWrapper() {
   const [isClient, setIsClient] = useState(false);
@@ -46,11 +50,11 @@ function NewsPortalWrapper() {
           <Route path="/countries" element={<CountriesPage />} />
           <Route path="/sources" element={<SourcesPage />} />
           <Route path="/search" element={<SearchPage />} />
-          <Route path="/about" element={<PlaceholderPage title="About Us" />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<PlaceholderPage title="Contact Us" />} />
-          <Route path="/privacy" element={<PlaceholderPage title="Privacy Policy" />} />
-          <Route path="/terms" element={<PlaceholderPage title="Terms of Service" />} />
-          <Route path="/cookies" element={<PlaceholderPage title="Cookie Policy" />} />
+          <Route path="/privacy" element={<PrivacyPolicyPage />} />
+          <Route path="/terms" element={<TermsOfServicePage />} />
+          <Route path="/cookies" element={<CookiesPolicyPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

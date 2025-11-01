@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { mockNews } from '../mock/mockData';
+import { searchNews } from '../services/api';
 import NewsCard from '../components/NewsCard';
 import { Search, ChevronRight, Loader2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -12,25 +12,41 @@ const SearchPage = () => {
   const [filteredNews, setFilteredNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     const query = searchParams.get('q');
     if (query) {
       setSearchQuery(query);
-      performSearch(query);
+      setFilteredNews([]);
+      setPage(1);
+      setHasMore(true);
+      setIsSearching(true);
+      performSearch(query, 1, true);
     } else {
       setFilteredNews([]);
+      setIsSearching(false);
     }
   }, [searchParams]);
 
-  const performSearch = (query) => {
+  const performSearch = async (query, pageNum, isNewSearch = false) => {
     setLoading(true);
-    const results = mockNews.filter(news =>
-      news.title.toLowerCase().includes(query.toLowerCase()) ||
-      news.description.toLowerCase().includes(query.toLowerCase())
-    );
-    setFilteredNews(results);
-    setLoading(false);
+    setError(null);
+    try {
+      const response = await searchNews(query, pageNum, 1000);
+      const results = response.data;
+      if (results.length === 0 || !response.next_page_url) {
+        setHasMore(false);
+      }
+      setFilteredNews(prevNews => isNewSearch ? results : [...prevNews, ...results]);
+    } catch (err) {
+      setError('Failed to fetch search results. Please try again later.');
+      setFilteredNews([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSearch = (e) => {
@@ -38,6 +54,12 @@ const SearchPage = () => {
     if (searchQuery.trim()) {
       setSearchParams({ q: searchQuery.trim() });
     }
+  };
+
+  const loadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    performSearch(searchQuery, nextPage);
   };
 
   return (
@@ -68,14 +90,14 @@ const SearchPage = () => {
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-emerald-600 hover:bg-emerald-700 text-white"
                 disabled={loading}
               >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Search'}
+                {loading && isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Search'}
               </Button>
             </div>
           </form>
         </div>
 
         {/* Loading State */}
-        {loading && (
+        {loading && isSearching && (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-12 h-12 text-emerald-600 animate-spin" />
           </div>
@@ -89,7 +111,7 @@ const SearchPage = () => {
         )}
 
         {/* Results */}
-        {!loading && searchParams.get('q') && (
+        {isSearching && !loading && (
           <div>
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
               <div>
@@ -118,6 +140,13 @@ const SearchPage = () => {
                     Browse Categories
                   </Button>
                 </Link>
+              </div>
+            )}
+             {filteredNews.length > 0 && hasMore && (
+              <div className="text-center mt-8">
+                <Button onClick={loadMore} disabled={loading}>
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Load More'}
+                </Button>
               </div>
             )}
           </div>

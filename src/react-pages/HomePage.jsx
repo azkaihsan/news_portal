@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import NewsCard from '../components/NewsCard';
 import TrendingSection from '../components/TrendingSection';
-import { mockNews, mockCategories } from '../mock/mockData';
+import { fetchNews, fetchCategories } from '../services/api';
 import { ChevronRight, Loader2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
@@ -13,9 +13,22 @@ const HomePage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setNews(mockNews);
-    setCategories(mockCategories);
-    setLoading(false);
+    const loadData = async () => {
+      try {
+        const [newsData, categoriesData] = await Promise.all([
+          fetchNews(20),
+          fetchCategories(),
+        ]);
+        setNews(newsData || []);
+        setCategories(categoriesData || []);
+      } catch (err) {
+        setError('Failed to fetch data. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
   if (loading) {
@@ -77,7 +90,7 @@ const HomePage = () => {
                       {newsItem.description}
                     </p>
                     <div className="flex items-center gap-3 text-xs text-gray-500">
-                      <span className="text-red-600 font-semibold">By {newsItem.author || 'Unknown'}</span>
+                      <span className="text-red-600 font-semibold">By {newsItem.author || newsItem.newssource.name || 'Unknown'}</span>
                       <span>{new Date(newsItem.published_at).toLocaleDateString()}</span>
                     </div>
                   </div>

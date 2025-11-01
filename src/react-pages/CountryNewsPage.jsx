@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { mockNews, mockCountries } from '../mock/mockData';
+import { fetchNewsByCountry, fetchCountries } from '../services/api';
 import NewsCard from '../components/NewsCard';
-import { MapPin, ChevronRight, Loader2 } from 'lucide-react';
+import { MapPin, ChevronRight, Loader2, Info } from 'lucide-react';
 import { Button } from '../components/ui/button';
 
 const CountryNewsPage = () => {
@@ -13,14 +13,27 @@ const CountryNewsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const foundCountry = mockCountries.find(c => c.code.toLowerCase() === countryCode?.toLowerCase());
-    if (foundCountry) {
-      setCountry(foundCountry);
-      setFilteredNews(mockNews.filter(news => news.country.code.toLowerCase() === countryCode?.toLowerCase()));
-    } else {
-      setError('Country not found');
-    }
-    setLoading(false);
+    const getCountryNews = async () => {
+      try {
+        setLoading(true);
+        const countries = await fetchCountries();
+        const foundCountry = countries.find(c => c.id.toString() === countryCode);
+        
+        if (foundCountry) {
+          setCountry(foundCountry);
+          const newsData = await fetchNewsByCountry(foundCountry.id, 100);
+          setFilteredNews(newsData);
+        } else {
+          setError('Country not found');
+        }
+      } catch (err) {
+        setError('Failed to fetch news. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getCountryNews();
   }, [countryCode]);
 
   if (loading) {
@@ -63,11 +76,15 @@ const CountryNewsPage = () => {
           <p className="text-gray-600">Latest news and updates from {country?.name}</p>
         </div>
 
-        {/* News Count */}
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
-          <p className="text-gray-600">
+        {/* News Count and Info */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 pb-4 border-b border-gray-200">
+          <p className="text-gray-600 mb-2 md:mb-0">
             <span className="font-semibold text-gray-900">{filteredNews.length}</span> articles found
           </p>
+          <div className="flex items-center gap-2 text-sm text-blue-600 bg-blue-50 p-2 rounded-md">
+            <Info className="w-4 h-4" />
+            <span>Showing the 100 most recent articles.</span>
+          </div>
         </div>
 
         {/* News Grid */}

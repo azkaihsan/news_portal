@@ -1,12 +1,16 @@
 ---
 import NewsPortalWrapper from '../../components/NewsPortalWrapper.jsx';
-import { mockCountries } from '../../mock/mockData.js';
+import { fetchCountries } from '../../services/api.js';
 
 export async function getStaticPaths() {
-  return mockCountries.map(country => ({
-    params: { countryCode: country.code.toLowerCase() }
+  const countries = await fetchCountries();
+  return countries.map((country: { id: number; name: string; code: string }) => ({
+    params: { countryCode: country.id.toString() },
+    props: { country }
   }));
 }
+
+const { country } = Astro.props as { country: { name: string } };
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +18,7 @@ export async function getStaticPaths() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="/pelita-logo.png" />
-  <title>Country News - News Portal</title>
+  <title>News from {country.name} - News Portal</title>
 </head>
 <body>
   <NewsPortalWrapper client:only="react" />

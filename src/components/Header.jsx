@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, Menu, X } from 'lucide-react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { mockCategories } from '../mock/mockData';
+import { fetchCategories } from '../services/api';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,7 +12,15 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setCategories(mockCategories.slice(0, 8)); // Show first 8 categories
+    const loadCategories = async () => {
+      try {
+        const fetchedCategories = await fetchCategories();
+        setCategories(fetchedCategories.slice(0, 7)); // Show first 8 categories
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+    loadCategories();
   }, []);
 
   const handleSearch = (e) => {
@@ -57,7 +65,7 @@ const Header = () => {
 
             {/* Right Section */}
             <div className="flex items-center gap-4 flex-1 justify-end">
-              <a href="/contact">
+              <a href="https://wa.me/6285183271214">
                 <Button
                   className="hidden md:flex bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white px-6 transition-all duration-300"
                 >
@@ -79,14 +87,15 @@ const Header = () => {
       <nav>
         <div className="max-w-7xl mx-auto px-4">
           <div className="hidden md:flex items-center justify-center gap-8 py-3">
-            <Link to="/category/business" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">BUSINESS</Link>
-            <Link to="/category/technology" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">TECHNOLOGY</Link>
-            <Link to="/category/environment" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">ENVIRONMENT</Link>
-            <Link to="/category/sports" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">SPORTS</Link>
-            <Link to="/category/health" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">HEALTH</Link>
-            <Link to="/category/science" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">SCIENCE</Link>
-            <Link to="/category/entertainment" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">ENTERTAINMENT</Link>
-            <Link to="/category/politics" className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide">POLITICS</Link>
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                to={`/category/${category.name.toLowerCase()}`}
+                className="text-sm font-medium text-gray-700 hover:text-emerald-600 transition-colors uppercase tracking-wide"
+              >
+                {category.name}
+              </Link>
+            ))}
           </div>
 
           {/* Mobile Menu */}
@@ -105,14 +114,16 @@ const Header = () => {
                 </div>
               </form>
               <div className="flex flex-col gap-2">
-                <Link to="/category/business" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">BUSINESS</Link>
-                <Link to="/category/technology" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">TECHNOLOGY</Link>
-                <Link to="/category/environment" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">ENVIRONMENT</Link>
-                <Link to="/category/sports" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">SPORTS</Link>
-                <Link to="/category/health" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">HEALTH</Link>
-                <Link to="/category/science" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">SCIENCE</Link>
-                <Link to="/category/entertainment" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">ENTERTAINMENT</Link>
-                <Link to="/category/politics" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700 hover:text-emerald-600 transition-colors">POLITICS</Link>
+                {categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    to={`/category/${category.name.toLowerCase()}`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="py-2 text-gray-700 hover:text-emerald-600 transition-colors"
+                  >
+                    {category.name.toUpperCase()}
+                  </Link>
+                ))}
               </div>
             </div>
           )}

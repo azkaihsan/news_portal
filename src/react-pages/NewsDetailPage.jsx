@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Clock, User, Share2, Facebook, Twitter, Linkedin, ArrowLeft, Loader2 } from 'lucide-react';
-import { mockNews } from '../mock/mockData';
+import { fetchNewsById, fetchNewsByCategory } from '../services/api';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import NewsCard from '../components/NewsCard';
@@ -14,17 +14,26 @@ const NewsDetailPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const newsData = mockNews.find(n => n.id.toString() === id);
-    if (newsData) {
-      setNews(newsData);
-      const related = mockNews.filter(
-        item => item.category.id === newsData.category.id && item.id !== newsData.id
-      ).slice(0, 3);
-      setRelatedNews(related);
-    } else {
-      setError('News not found');
+    const getNewsDetails = async () => {
+      try {
+        setLoading(true);
+        const newsData = await fetchNewsById(id);
+        setNews(newsData);
+        if (newsData && newsData.category) {
+          const related = await fetchNewsByCategory(newsData.category.name, 5);
+          setRelatedNews(related.filter(item => item.id !== newsData.id).slice(0, 3));
+        }
+      } catch (err) {
+        setError('Failed to fetch news details.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      getNewsDetails();
     }
-    setLoading(false);
   }, [id]);
 
   if (loading) {
@@ -92,7 +101,7 @@ const NewsDetailPage = () => {
           <div className="flex flex-wrap items-center gap-6 mb-6 pb-6 border-b border-gray-200">
             <div className="flex items-center gap-2 text-gray-600">
               <User className="w-5 h-5" />
-              <span className="font-semibold">{news.author || 'Unknown Author'}</span>
+              <span className="font-semibold">{news.author || news.newssource.name || 'Unknown Author'}</span>
             </div>
             <div className="flex items-center gap-2 text-gray-600">
               <Clock className="w-5 h-5" />

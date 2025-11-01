@@ -1,9 +1,10 @@
 ---
 import NewsPortalWrapper from '../../components/NewsPortalWrapper.jsx';
-import { mockSources } from '../../mock/mockData.js';
+import { fetchSources } from '../../services/api.js';
 
 export async function getStaticPaths() {
-  return mockSources.map(source => ({
+  const sources = await fetchSources();
+  return sources.map((source: { id: any }) => ({
     params: { sourceId: source.id.toString() }
   }));
 }

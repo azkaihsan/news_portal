@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { mockNews, mockSources } from '../mock/mockData';
+import { fetchNewsBySource, fetchSourceById } from '../services/api';
 import NewsCard from '../components/NewsCard';
 import { Newspaper, ChevronRight, ExternalLink, Loader2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -13,14 +13,22 @@ const SourceNewsPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const foundSource = mockSources.find(s => s.id.toString() === sourceId);
-    if (foundSource) {
-      setSource(foundSource);
-      setFilteredNews(mockNews.filter(news => news.source.id.toString() === sourceId));
-    } else {
-      setError('Source not found');
-    }
-    setLoading(false);
+    const getSourceNews = async () => {
+      try {
+        const [sourceData, newsData] = await Promise.all([
+          fetchSourceById(sourceId),
+          fetchNewsBySource(sourceId)
+        ]);
+        setSource(sourceData);
+        setFilteredNews(newsData);
+      } catch (err) {
+        setError('Failed to fetch news for this source. Please try again later.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getSourceNews();
   }, [sourceId]);
 
   if (loading) {
